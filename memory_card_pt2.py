@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QLabel, QMessageBox, QRadioButton, QGroupBox
+from PyQt5.QtWidgets import QLabel, QMessageBox, QRadioButton, QGroupBox, QButtonGroup
 from random import shuffle
   
 ### Create Application Object ###
@@ -31,10 +31,17 @@ mainWin.setWindowTitle("Memory Card Quizz")
 #* Create Button Objects
 ansBtn = QPushButton("Answer")
 
-ansBtn_1 = QRadioButton("1921")
-ansBtn_2 = QRadioButton("1963")
-ansBtn_3 = QRadioButton("1975") # Correct Ans
-ansBtn_4 = QRadioButton("1947")
+ansBtn_1 = QRadioButton("Option 1")
+ansBtn_2 = QRadioButton("Option 2")
+ansBtn_3 = QRadioButton("Option 3") # Correct Ans
+ansBtn_4 = QRadioButton("Option 4")
+
+#* Create a group for the radio buttons
+ansBtnGrp = QButtonGroup() #!Pt2
+ansBtnGrp.addButton(ansBtn_1) #!Pt2
+ansBtnGrp.addButton(ansBtn_2) #!Pt2
+ansBtnGrp.addButton(ansBtn_3) #!Pt2
+ansBtnGrp.addButton(ansBtn_4) #!Pt2
 
 #* Add Radio Buttons To List
 answers = [ansBtn_1, ansBtn_2, ansBtn_3, ansBtn_4] #!Pt2
@@ -105,12 +112,12 @@ def showQuestion(): #!Pt2
     ansGrpBox.hide()
     radioGrpBox.show()
     ansBtn.setText("Answer")
-    radioGrpBox.setExclusive(False)
+    ansBtnGrp.setExclusive(False)
     ansBtn_1.setChecked(False)
     ansBtn_2.setChecked(False)
     ansBtn_3.setChecked(False)
     ansBtn_4.setChecked(False)
-    radioGrpBox.setExclusive(True)
+    ansBtnGrp.setExclusive(True)
 
 #* Function for displaying the values of questtions and answering into their widgets and randomly distributes the answers to buttons
 def ask(question, right_answer, wrong1, wrong2, wrong3): #!Pt2
@@ -139,8 +146,8 @@ def checkAnswer(): #!Pt2
 #* Add Layout Main to Main Window
 mainWin.setLayout(layoutMain)
 
-#ask('The national language of Brazil', 'Portuguese', 'Brazilian', 'Spanish', 'Italian') #!Pt2
-#ansBtn.clicked.connect(checkAnswer) #!Pt2
+ask('The national language of Brazil', 'Portuguese', 'Brazilian', 'Spanish', 'Italian') #!Pt2
+ansBtn.clicked.connect(checkAnswer) #!Pt2
 
 ### Execute the Application ###
 mainWin.show()
