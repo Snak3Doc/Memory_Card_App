@@ -7,14 +7,18 @@ from random import shuffle
 ### Create Application Object ###
 app = QApplication([])
 
-### Style Sheet ###
+### Style Sheet ### #!Pt2
 #* Font
+#? Loads the font from the OS into Qt, creates a font object assigns the
+#? font size and applies it to the app object.
 QtGui.QFontDatabase.addApplicationFont("Exo 2")
 font = QtGui.QFont("Exo 2")
 font.setPointSize(12)
 app.setFont(font)
 
 #* Styles
+#? Sets a style sheet for the app object, all objects made from the
+#? included Qclasses will have these styless applied to them.
 app.setStyleSheet(
     "QWidget { color: #bbbfc3; background-color: #282b30; }"
     "QPushButton { background-color: #424549; }"
@@ -26,6 +30,7 @@ app.setStyleSheet(
 ### Create Main Window Object ###
 mainWin = QWidget()
 mainWin.setWindowTitle("Memory Card Quizz")
+mainWin.resize(400, 200) #!Pt2
 
 ### Create GUI ###
 #* Create Button Objects
