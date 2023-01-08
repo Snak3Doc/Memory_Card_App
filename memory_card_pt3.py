@@ -3,7 +3,23 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QVBoxLayout
 from PyQt5.QtWidgets import QLabel, QMessageBox, QRadioButton, QGroupBox, QButtonGroup
 from random import shuffle
-  
+
+### Question Class & Objects ### #!Pt3
+class Question(): 
+    #*Constructor
+    def __init__(self, question, right_answer, wrong1, wrong2, wrong3):
+        self.question = question
+        self.right_answer = right_answer
+        self.wrong1 = wrong1
+        self.wrong2 = wrong2
+        self.wrong3 = wrong3
+
+QuestionLst = []
+QuestionLst.append(Question("What is the national language of Brazil?", "Portuguese", "Spanish", "Brazillian", "Italian"))
+QuestionLst.append(Question("What is the most popular game amongst children?", "Roblox", "Minecraft", "AmongUs", "Fortnite"))
+QuestionLst.append(Question("What is the most used programing language?", "Python", "JavaScript", "C#", "Lua"))
+QuestionLst.append(Question("What is the capital of Australia?", "Cambera", "Sydney", "Perth", "Melbourne"))
+
 ### Create Application Object ###
 app = QApplication([])
 
@@ -30,14 +46,15 @@ app.setStyleSheet(
 mainWin = QWidget()
 mainWin.setWindowTitle("Memory Card Quizz")
 mainWin.resize(400, 200) #!Pt2
+mainWin.curQuestion = -1 #!Pt3
 
 ### Create GUI ###
 #* Create Button Objects
 ansBtn = QPushButton("Answer")
 
-ansBtn_1 = QRadioButton("Option 1")
+ansBtn_1 = QRadioButton("Option 1") #!Pt3 - Change button values to Option 1,2,3,4
 ansBtn_2 = QRadioButton("Option 2")
-ansBtn_3 = QRadioButton("Option 3") # Correct Ans
+ansBtn_3 = QRadioButton("Option 3")
 ansBtn_4 = QRadioButton("Option 4")
 
 #* Create a group for the radio buttons
@@ -119,22 +136,23 @@ def showQuestion(): #!Pt2
     ansGrpBox.hide()
     radioGrpBox.show()
     ansBtn.setText("Answer")
-    ansBtnGrp.setExclusive(False)
+    ansBtnGrp.setExclusive(False) 
     ansBtn_1.setChecked(False)
     ansBtn_2.setChecked(False)
     ansBtn_3.setChecked(False)
     ansBtn_4.setChecked(False)
-    ansBtnGrp.setExclusive(True)
+    ansBtnGrp.setExclusive(True) #True means only 1 btn can be selected at a time
 
-#* Function for displaying the values of questions and answering into their widgets and randomly distributes the answers to buttons
-def setAnswers(question, right_answer, wrong1, wrong2, wrong3): #!Pt2
+#* Function for displaying the values of questions and answers into their 
+#*  widgets/btns and randomly distributes the answers in the radio btns.
+def setAnswers(q: Question): #!Pt2 | Pt3 - Update Values 
     shuffle(ansBtnLst)
-    ansBtnLst[0].setText(right_answer)
-    ansBtnLst[1].setText(wrong1)
-    ansBtnLst[2].setText(wrong2)
-    ansBtnLst[3].setText(wrong3)
-    questLbl.setText(question)
-    correctLbl.setText(right_answer) 
+    ansBtnLst[0].setText(q.right_answer)
+    ansBtnLst[1].setText(q.wrong1)
+    ansBtnLst[2].setText(q.wrong2)
+    ansBtnLst[3].setText(q.wrong3)
+    questLbl.setText(q.question)
+    correctLbl.setText(q.right_answer) 
     showQuestion() 
 
 #* Function for showing the result
@@ -150,10 +168,27 @@ def checkAnswer(): #!Pt2
         if ansBtnLst[1].isChecked() or ansBtnLst[2].isChecked() or ansBtnLst[3].isChecked():
             showCorrect('Incorrect!')
 
+#* Function to displaying the next question
+def showNext(): #!Pt3
+    mainWin.curQuestion = mainWin.curQuestion + 1 #Holds the number of the current question
+    if mainWin.curQuestion >= len(QuestionLst):
+        mainWin.curQuestion = 0
+    q = QuestionLst[mainWin.curQuestion]
+    setAnswers(q)
+
+#* Ok btn handler function
+def clickOK(): #!Pt3
+    #Determines if if should diplay next question or check answer
+    if ansBtn.text == "Answer":
+        checkAnswer()
+    else:
+        showNext()
 
 
-setAnswers('The national language of Brazil', 'Portuguese', 'Brazilian', 'Spanish', 'Italian') #!Pt2
-ansBtn.clicked.connect(checkAnswer) #!Pt2
+
+#!setAnswers('The national language of Brazil', 'Portuguese', 'Brazilian', 'Spanish', 'Italian') #!Pt2
+ansBtn.clicked.connect(clickOK) #!Pt2 | Pt3 - Update function call
+showNext() #!Pt3
 
 ### Execute the Application ###
 mainWin.show()

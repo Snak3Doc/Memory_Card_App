@@ -35,10 +35,10 @@ mainWin.resize(400, 200) #!Pt2
 #* Create Button Objects
 ansBtn = QPushButton("Answer")
 
-ansBtn_1 = QRadioButton("Option 1")
-ansBtn_2 = QRadioButton("Option 2")
-ansBtn_3 = QRadioButton("Option 3") # Correct Ans
-ansBtn_4 = QRadioButton("Option 4")
+ansBtn_1 = QRadioButton("Option 1") #!Pt2
+ansBtn_2 = QRadioButton("Option 2") #!Pt2
+ansBtn_3 = QRadioButton("Option 3") #!Pt2
+ansBtn_4 = QRadioButton("Option 4") #!Pt2
 
 #* Create a group for the radio buttons
 ansBtnGrp = QButtonGroup() #!Pt2
