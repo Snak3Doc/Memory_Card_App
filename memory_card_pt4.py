@@ -2,7 +2,8 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QVBoxLayout
 from PyQt5.QtWidgets import QLabel, QMessageBox, QRadioButton, QGroupBox, QButtonGroup
-from random import shuffle
+from random import shuffle, choice
+import sys
 
 ### Question Class & Objects ### #!Pt3
 class Question(): 
@@ -47,6 +48,8 @@ mainWin = QWidget()
 mainWin.setWindowTitle("Memory Card Quizz")
 mainWin.resize(400, 200) #!Pt2
 mainWin.curQuestion = -1 #!Pt3
+mainWin.total = 0
+mainWin.score = 0
 
 ### Create GUI ###
 #* Create Button Objects
@@ -162,32 +165,42 @@ def showCorrect(res): #!Pt2
 
 #* Function for checking the selected answer and displaying the result True/False
 def checkAnswer(): #!Pt2
-    print("Checking answer")
+    mainWin.total += 1
     if ansBtnLst[0].isChecked():
         showCorrect('Correct!')
+        mainWin.score += 1
+        checkScore()
     else:
         if ansBtnLst[1].isChecked() or ansBtnLst[2].isChecked() or ansBtnLst[3].isChecked():
             showCorrect('Incorrect!')
+            checkScore()
 
 #* Function to displaying the next question
-def showNext(): #!Pt3
-    mainWin.curQuestion = mainWin.curQuestion + 1 #Holds the number of the current question
-    if mainWin.curQuestion >= len(QuestionLst):
-        mainWin.curQuestion = 0
-    q = QuestionLst[mainWin.curQuestion]
-    setAnswers(q)
+def showNext(): #!Pt3 | Pt4 - Update function body
+    if len(QuestionLst) > 0:
+        q = choice(QuestionLst)
+        QuestionLst.remove(q)
+        setAnswers(q)
+    else:
+        print("All questions have been answered, exiting program")
+        app.exit()
+        sys.exit()
 
 #* Ok btn handler function
 def clickOK(): #!Pt3
-    #Determines if if should diplay next question or check answer
+    #Determines if should run next question or check answer functions
     if ansBtn.text() == "Answer":
         checkAnswer()
     else:
         showNext()
 
+#* Print Score function
+def checkScore(): #!Pt4
+    print(f"Total Questions Answered: {mainWin.total}")
+    print(f"Correct Answers: {mainWin.score}")
+
 
 ### Event Handlers ###
-#!setAnswers('The national language of Brazil', 'Portuguese', 'Brazilian', 'Spanish', 'Italian') #!Pt2
 ansBtn.clicked.connect(clickOK) #!Pt2 | Pt3 - Update function call
 
 ### Execute the Application ###
