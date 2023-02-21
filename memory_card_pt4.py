@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QVB
 from PyQt5.QtWidgets import QLabel, QMessageBox, QRadioButton, QGroupBox, QButtonGroup
 from random import shuffle, choice
 import sys
+import stylesheet
 
 ### Question Class & Objects ### #!Pt3
 class Question(): 
@@ -25,23 +26,8 @@ QuestionLst.append(Question("What is the capital of Australia?", "Cambera", "Syd
 app = QApplication([])
 
 ### Style Sheet ### #!Pt2
-#* Font
-#? Loads the font from the OS into Qt, creates a font object assigns the
-#? font size and applies it to the app object.
-QtGui.QFontDatabase.addApplicationFont("Exo 2")
-font = QtGui.QFont("Exo 2")
-font.setPointSize(12)
-app.setFont(font)
-
-#* Styles
-#? Sets a style sheet for the app object, all objects made from the
-#? included Qclasses will have these styless applied to them.
-app.setStyleSheet(
-    "QWidget { color: #bbbfc3; background-color: #282b30; }"
-    "QPushButton { background-color: #424549; }"
-    "QGroupBox { font: bold; border: 1px solid white; border-radius: 6px; margin-top: 6px; }"
-    "QGroupBox::title { subcontrol-origin: margin; left: 7px; margin; bottom: 9px; padding: 0px 5px 0px 5px; }"
-)
+stylesheet.set_font(app)
+stylesheet.set_style(app)
 
 ### Create Main Window Object ###
 mainWin = QWidget()
